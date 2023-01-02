@@ -18,6 +18,7 @@ BULLETS_VEL = 7
 MAX_BULLETS = 3
 VEL = 5
 
+SPACE =  pygame.transform.scale(pygame.image.load(os.path.join('Assets' , 'space.png')), (WIDTH,HEIGHT))
 
 YELLOW_HIT = pygame.USEREVENT + 1
 RED_HIT = pygame.USEREVENT + 2
@@ -29,12 +30,17 @@ def handle_bullets(yellow_bullets , red_bullets , yellow , red):
         if red.colliderect(bullets):
             pygame.event.post(pygame.event.Event(RED_HIT))
             yellow_bullets.remove(bullets)
+        elif bullets.x > WIDTH:
+            yellow_bullets.remove(bullets)
+
 
 
     for bullets  in red_bullets:
         bullets.x -= BULLETS_VEL
         if yellow.colliderect(bullets):
             pygame.event.post(pygame.event.Event(YELLOW_HIT))
+            red_bullets.remove(bullets)
+        elif bullets.x < 0:
             red_bullets.remove(bullets)
 
 def yellow_handle_movement(key_pressed, yellow):
@@ -58,7 +64,7 @@ def red_handle_movement(key_pressed, red):
         red.y += VEL
 
 def draw_window(red,yellow , red_bullets , yellow_bullets):
-    WIN.fill(WHITE)
+    WIN.blit(SPACE , (0,0))
     pygame.draw.rect(WIN,BLACK,BORDER)
     WIN.blit(RED_SPACESHIP , (red.x , red.y))
     WIN.blit(YELLOW_SPACESHIP,(yellow.x , yellow.y))
