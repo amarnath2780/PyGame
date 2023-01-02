@@ -1,8 +1,9 @@
 import pygame
 import os
 pygame.font.init()
+pygame.mixer.init()
 
-WIDTH , HEIGHT = 900 , 650
+WIDTH , HEIGHT = 1000 , 650
 
 WIN  = pygame.display.set_mode((WIDTH , HEIGHT))
 pygame.display.set_caption('War Zone')
@@ -19,14 +20,22 @@ BULLETS_VEL = 7
 MAX_BULLETS = 3
 VEL = 5
 
-HEALTH_FONT = pygame.font.SysFont('comicsans' , 40)
-
+HEALTH_FONT = pygame.font.SysFont('comicsans' , 30)
+WINNER_FONT = pygame.font.SysFont('comicsans' , 70)
 
 SPACE =  pygame.transform.scale(pygame.image.load(os.path.join('Assets' , 'space.png')), (WIDTH,HEIGHT))
 
 YELLOW_HIT = pygame.USEREVENT + 1
 RED_HIT = pygame.USEREVENT + 2
 
+
+
+
+def draw_winner(text):
+    draw = WINNER_FONT.render(text,1, WHITE)
+    WIN.blit(draw,(WIDTH //2 - draw.get_width()//2, HEIGHT//2 - draw.get_height()//2 ))
+    pygame.display.update()
+    pygame.time.delay(5000)
 
 def handle_bullets(yellow_bullets , red_bullets , yellow , red):
     for bullets  in yellow_bullets:
@@ -116,6 +125,7 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
+                pygame.quit()
         
             if event.type == pygame.KEYDOWN:
                 if event.key ==  pygame.K_LSHIFT and len(yellow_bullets) < MAX_BULLETS:
@@ -136,7 +146,8 @@ def main():
         if yellow_health <=0:
             winner_text = 'RED WIN THE GAME'
         if winner_text != '':
-            pass
+            draw_winner(winner_text)
+            break
         
         key_pressed = pygame.key.get_pressed()
         yellow_handle_movement(key_pressed , yellow)
@@ -148,7 +159,7 @@ def main():
 
         
 
-    pygame.quit()
+    main()
 
 
 if __name__ == '__main__':
