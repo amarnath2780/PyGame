@@ -29,8 +29,9 @@ YELLOW_HIT = pygame.USEREVENT + 1
 RED_HIT = pygame.USEREVENT + 2
 
 
-BULLET_HIT_SOUND = pygame.mixer.Sound(os.path.join('Assetss' , 'Grenade+1.mp3'))
-BULLET_FIRE_SOUND = pygame.mixer.Sound (os.path.join('Assetss' , 'Gun+Silencer.mp3'))
+# BULLET_HIT_SOUND = pygame.mixer.Sound('Assets/Grenade.mp3')
+# BULLET_FIRE_SOUND = pygame.mixer.Sound ('Assets/Gun+Silencer.mp3')
+# WINNER_SOUND = pygame.mixer.Sound('Assets/Tokyo Drift Msg.mp3')
 
 
 
@@ -38,7 +39,8 @@ def draw_winner(text):
     draw = WINNER_FONT.render(text,1, WHITE)
     WIN.blit(draw,(WIDTH //2 - draw.get_width()//2, HEIGHT//2 - draw.get_height()//2 ))
     pygame.display.update()
-    pygame.time.delay(5000)
+    # WINNER_SOUND.play()
+    pygame.time.delay(3000)
 
 def handle_bullets(yellow_bullets , red_bullets , yellow , red):
     for bullets  in yellow_bullets:
@@ -134,20 +136,20 @@ def main():
                 if event.key ==  pygame.K_LSHIFT and len(yellow_bullets) < MAX_BULLETS:
                     bullet = pygame.Rect(yellow.x + yellow.width , yellow.y + yellow.height//2 - 2 ,10,5)
                     yellow_bullets.append(bullet)
-                    BULLET_FIRE_SOUND.play()
+                    # BULLET_FIRE_SOUND.play()
 
                 if event.key ==  pygame.K_RSHIFT and len(red_bullets) < MAX_BULLETS:
                     bullet = pygame.Rect(red.x , red.y + red.height//2 - 2 ,10,5)
                     red_bullets.append(bullet)
-                    BULLET_FIRE_SOUND.play()
+                    # BULLET_FIRE_SOUND.play()
 
             if event.type == RED_HIT:
                 red_health -=1
-                BULLET_HIT_SOUND.play()
+                # BULLET_HIT_SOUND.play()
 
             if event.type == YELLOW_HIT:
                 yellow_health -=1
-                BULLET_HIT_SOUND.play()
+                # BULLET_HIT_SOUND.play()
         
         winner_text = ''
         if red_health <= 0:
